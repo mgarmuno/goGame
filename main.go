@@ -34,18 +34,11 @@ func main() {
 	}
 	defer renderer.Destroy()
 
-	img, err := sdl.LoadBMP("sprites/necro.bmp")
+	plr, err := newPlayer(renderer)
 	if err != nil {
-		fmt.Println("loading player sprite", err)
+		fmt.Println("Creating player: ", err)
 		return
 	}
-	defer img.Free()
-	playerTex, err := renderer.CreateTextureFromSurface(img)
-	if err != nil {
-		fmt.Println("creating player texture:", err)
-		return
-	}
-	defer playerTex.Destroy()
 
 	for {
 		for event := sdl.PollEvent(); event != nil; event = sdl.PollEvent() {
@@ -57,8 +50,7 @@ func main() {
 
 		renderer.SetDrawColor(255, 255, 255, 255)
 		renderer.Clear()
-
-		renderer.Copy(playerTex, &sdl.Rect{X: 0, Y: 0, W: 80, H: 80}, &sdl.Rect{X: 0, Y: 0, W: 80, H: 80})
+		plr.draw(renderer)
 		renderer.Present()
 	}
 }
