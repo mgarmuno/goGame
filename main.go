@@ -54,6 +54,7 @@ func main() {
 				return
 			}
 		}
+
 		renderer.SetDrawColor(255, 255, 255, 255)
 		renderer.Clear()
 
