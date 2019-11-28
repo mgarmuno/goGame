@@ -40,7 +40,7 @@ func main() {
 		return
 	}
 
-	enemy, err := newBasicEnemy(renderer, screenWidth/2.0, screenHeight/2.0)
+	enemy, err := newBasicEnemy(renderer, screenWidth*0.9, screenHeight*0.9-playerSize/2.0)
 	if err != nil {
 		fmt.Println("Creating basic enemy:", err)
 		return
