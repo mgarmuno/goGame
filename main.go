@@ -34,17 +34,19 @@ func main() {
 	}
 	defer renderer.Destroy()
 
-	plr, err := newPlayer(renderer)
+	plr := newPlayer(renderer)
 	if err != nil {
 		fmt.Println("Creating player: ", err)
 		return
 	}
 
-	enemy, err := newBasicEnemy(renderer, screenWidth*0.9, screenHeight*0.9-playerSize/2.0)
+	enemy := newBasicEnemy(renderer, screenWidth*0.9, screenHeight*0.9-enemySize/2.0)
 	if err != nil {
 		fmt.Println("Creating basic enemy:", err)
 		return
 	}
+
+	initFireballPool(renderer)
 
 	for {
 		for event := sdl.PollEvent(); event != nil; event = sdl.PollEvent() {
@@ -56,8 +58,22 @@ func main() {
 
 		renderer.SetDrawColor(255, 255, 255, 255)
 		renderer.Clear()
-		plr.draw(renderer)
-		plr.update()
+
+		err = plr.draw(renderer)
+		if err != nil {
+			fmt.Println("drawing palyer:", err)
+			return
+		}
+		err = plr.update()
+		if err != nil {
+			fmt.Println("updating player:", err)
+			return
+		}
+
+		for _, fb := range fireballPool {
+			fb.draw(renderer)
+			fb.update()
+		}
 
 		enemy.draw(renderer)
 		renderer.Present()
